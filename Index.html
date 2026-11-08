@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAS CUI Lahore | Open Source</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            red: '#ff2a55',
+                            crimson: '#e60039',
+                            darkRed: '#80001c',
+                            ruby: '#ff4d6d',
+                            obsidian: '#050306',
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 18s ease-in-out infinite',
+                        'float-reverse': 'floatReverse 15s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3.5s ease-in-out infinite',
+                        'liquid-shimmer': 'liquidShimmer 4s linear infinite',
+                        'fluid-flow': 'fluidFlow 25s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translate(0, 0) scale(1) rotate(0deg)' },
+                            '33%': { transform: 'translate(50px, -60px) scale(1.15) rotate(4deg)' },
+                            '66%': { transform: 'translate(-40px, 40px) scale(0.9) rotate(-3deg)' },
+                        },
+                        floatReverse: {
+                            '0%, 100%': { transform: 'translate(0, 0) scale(1) rotate(0deg)' },
+                            '33%': { transform: 'translate(-60px, 50px) scale(0.95) rotate(-5deg)' },
+                            '66%': { transform: 'translate(40px, -50px) scale(1.1) rotate(3deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.35, filter: 'blur(90px) brightness(1)' },
+                            '50%': { opacity: 0.75, filter: 'blur(100px) brightness(1.4)' },
+                        },
+                        liquidShimmer: {
+                            '0%': { backgroundPosition: '-300% 0' },
+                            '100%': { backgroundPosition: '300% 0' },
+                        },
+                        fluidFlow: {
+                            '0%, 100%': { transform: 'scale(1) rotate(0deg) translate(0, 0)' },
+                            '50%': { transform: 'scale(1.25) rotate(180deg) translate(20px, -30px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Deep Obsidian Crimson Base */
+        body {
+            background-color: #040205;
+            color: #f8fafc;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* LIQUID GLASS ARCHITECTURE & CHROMATIC REFRACTION */
+        .liquid-glass {
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.08) 0%,
+                rgba(255, 42, 85, 0.03) 30%,
+                rgba(12, 4, 10, 0.65) 70%,
+                rgba(255, 255, 255, 0.05) 100%
+            );
+            backdrop-filter: blur(28px) saturate(210%);
+            -webkit-backdrop-filter: blur(28px) saturate(210%);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            /* Multi-layer liquid refraction highlight & rim glow */
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.85),
+                0 12px 24px -8px rgba(230, 0, 57, 0.15),
+                inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.45),
+                inset 0 -1.5px 1px 0 rgba(255, 42, 85, 0.25),
+                inset 1.5px 0 2px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Chromatic Aberration & Liquid Edge Reflection Highlight */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(
+                180deg,
+                rgba(255, 255, 255, 0.18) 0%,
+                rgba(255, 255, 255, 0.04) 40%,
+                transparent 100%
+            );
+            pointer-events: none;
+            border-radius: 28px 28px 0 0;
+        }
+
+        /* Specular Corner Lens Light Burst */
+        .liquid-glass-lens {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 42, 85, 0.3) 30%,
+                transparent 70%
+            );
+            filter: blur(10px);
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* 3D Tilt Wrapper */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        .tilt-card:hover {
+            box-shadow: 
+                0 35px 70px -10px rgba(0, 0, 0, 0.9),
+                0 0 30px 2px rgba(255, 42, 85, 0.25),
+                inset 0 2px 2px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .liquid-pill {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .liquid-input {
+            background: rgba(12, 4, 10, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 0 rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .liquid-input:focus {
+            background: rgba(18, 5, 14, 0.9);
+            border-color: #ff2a55;
+            box-shadow: 0 0 25px rgba(255, 42, 85, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+            outline: none;
+        }
+
+        /* Text Gradients */
+        .text-gradient-red {
+            background: linear-gradient(135deg, #ffffff 0%, #ff4d6d 50%, #e60039 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-glass {
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* SVG Distortion Filter Layer */
+        .distortion-layer {
+            filter: url(#liquid-refraction);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #040205;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 42, 85, 0.3);
+            border-radius: 9999px;
+            border: 2px solid #040205;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 42, 85, 0.6);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-100 selection:bg-red-500 selection:text-white">
+
+    <!-- SVG TURBULENCE FILTER FOR LIQUID REFRACTION -->
+    <svg class="hidden" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="liquid-refraction" x="-10%" y="-10%" width="120%" height="120%" filterUnits="objectBoundingBox">
+                <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- CONTINUOUS AMBIENT LIQUID FLUID BACKGROUND MESH -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <!-- Deep Red Fluid Mesh Base -->
+        <div class="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-950/80 via-black to-black"></div>
+        
+        <!-- Animated Glowing Orbs -->
+        <div class="absolute w-[650px] h-[650px] rounded-full bg-gradient-to-tr from-red-600/40 via-crimson-600/30 to-purple-900/20 -top-32 -left-32 animate-float-slow blur-[110px]"></div>
+        <div class="absolute w-[700px] h-[700px] rounded-full bg-gradient-to-br from-red-700/35 via-rose-900/20 to-black top-1/2 -right-40 animate-float-reverse blur-[120px]"></div>
+        <div class="absolute w-[500px] h-[500px] rounded-full bg-red-500/25 bottom-10 left-1/3 animate-pulse-glow blur-[90px]"></div>
+        
+        <!-- Dynamic Silk Waves Pattern -->
+        <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#ff2a55_1px,transparent_1px)] [background-size:28px_28px]"></div>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="relative z-10 flex flex-col min-h-screen">
+
+        <!-- HEADER DOCK -->
+        <header class="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 max-w-7xl w-full mx-auto">
+            <nav class="liquid-glass rounded-full px-5 py-3 flex items-center justify-between transition-all duration-300">
+                <div class="liquid-glass-lens"></div>
+                <!-- Brand Logo -->
+                <a href="#home" class="flex items-center gap-3.5 group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-red-500 via-crimson-600 to-rose-400 p-[1.5px] flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full bg-black/90 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-microchip text-red-500 text-sm group-hover:rotate-12 transition-transform"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-extrabold text-sm sm:text-base tracking-wide text-white flex items-center gap-2">
+                            RAS CUI Lahore <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/40 font-mono">IEEE</span>
+                        </span>
+                        <span class="text-[10px] text-slate-400 font-mono tracking-wider uppercase">Open Source Chapter</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Items -->
+                <div class="hidden md:flex items-center gap-1 liquid-pill rounded-full p-1.5">
+                    <a href="#home" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all">Home</a>
+                    <a href="#git-guide" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all">Git & GitHub Guide</a>
+                    <a href="#submit-proposal" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all">Submit Proposal</a>
+                    <a href="#projects" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 transition-all">Repositories</a>
+                </div>
+
+                <!-- Status Badge & CTA -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full liquid-pill text-xs text-slate-300">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                        <span class="font-mono text-[11px] text-red-300">Spring '25 Active</span>
+                    </div>
+                    <a href="#submit-proposal" class="relative group overflow-hidden rounded-full p-[1px]">
+                        <span class="absolute inset-0 bg-gradient-to-r from-red-600 via-rose-500 to-red-400 rounded-full animate-liquid-shimmer bg-[length:200%_100%]"></span>
+                        <span class="relative px-4 py-2 rounded-full bg-black/90 text-xs font-semibold text-white flex items-center gap-2 group-hover:bg-transparent transition-all">
+                            <span>Submit Idea</span>
+                            <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section id="home" class="relative pt-16 pb-20 md:pt-24 md:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+            
+            <!-- Glass Tag -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid-pill text-xs font-medium text-red-300 mb-8 shadow-xl border border-red-500/30">
+                <i class="fa-brands fa-github text-white text-base"></i>
+                <span>COMSATS University Lahore IEEE RAS Chapter</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.08] mb-6 max-w-5xl">
+                Building Next-Gen <br class="hidden sm:inline"/>
+                <span class="text-gradient-red">Robotics & Software</span> Open Source.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl font-light leading-relaxed mb-10">
+                Empowering student engineers at CUI Lahore to collaborate, contribute, and innovate. Learn Git fundamentals and submit open-source proposals to our GitHub Head.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+                <a href="#git-guide" class="px-8 py-4 rounded-2xl liquid-glass font-semibold text-sm sm:text-base text-white flex items-center gap-3 group hover:border-red-500/50 transition-all">
+                    <i class="fa-solid fa-book-open text-red-400 group-hover:rotate-12 transition-transform"></i>
+                    <span>Learn Git Essentials</span>
+                </a>
+                <a href="#submit-proposal" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-red-600 via-crimson-600 to-rose-600 text-white font-bold text-sm sm:text-base shadow-xl shadow-red-600/30 hover:shadow-red-600/50 hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Submit Proposal</span>
+                </a>
+            </div>
+
+            <!-- LIQUID GLASS REFERENCE DEMO WIDGET (Matching User Reference Image) -->
+            <div class="w-full max-w-xl liquid-glass tilt-card p-6 rounded-3xl mb-12 text-left relative group cursor-pointer" data-tilt>
+                <div class="liquid-glass-lens"></div>
+                <!-- Top Progress Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500/20 to-black border border-white/20 flex items-center justify-center shadow-inner">
+                            <i class="fa-solid fa-layer-group text-red-400 text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl font-black text-white font-mono">75%</span>
+                                <span class="text-xs text-slate-300 font-medium">Sprint 4 progress...</span>
+                            </div>
+                            <span class="text-[11px] text-red-400 font-mono">IEEE RAS OS Kernel v2.4</span>
+                        </div>
+                    </div>
+                    <div class="w-6 h-6 rounded-full border-2 border-red-500 border-t-transparent animate-spin"></div>
+                </div>
+
+                <!-- Liquid Progress Bar -->
+                <div class="w-full h-3 rounded-full bg-black/60 p-0.5 border border-white/10 mb-6">
+                    <div class="h-full rounded-full bg-gradient-to-r from-red-600 via-crimson-500 to-rose-400 w-[75%] shadow-[0_0_12px_rgba(255,42,85,0.8)] relative">
+                        <div class="absolute right-0 top-0 bottom-0 w-2 bg-white rounded-full blur-[1px]"></div>
+                    </div>
+                </div>
+
+                <!-- Collaborators Avatars & Action Link -->
+                <div class="flex items-center justify-between pt-2 border-t border-white/10">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-mono">Maintainers:</span>
+                        <div class="flex -space-x-2">
+                            <div class="w-7 h-7 rounded-full bg-red-900 border border-white/30 flex items-center justify-center text-[10px] font-bold">AH</div>
+                            <div class="w-7 h-7 rounded-full bg-rose-800 border border-white/30 flex items-center justify-center text-[10px] font-bold">MS</div>
+                            <div class="w-7 h-7 rounded-full bg-slate-800 border border-white/30 flex items-center justify-center text-[10px] font-bold">ZA</div>
+                            <div class="w-7 h-7 rounded-full bg-red-600 border border-white/30 flex items-center justify-center text-[10px] font-bold text-white">+5</div>
+                        </div>
+                    </div>
+                    <a href="#projects" class="text-xs font-semibold text-red-400 hover:text-white flex items-center gap-1 transition-colors">
+                        <span>More details</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-4 p-4 rounded-3xl liquid-glass">
+                <div class="p-4 rounded-2xl liquid-pill flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-extrabold text-white font-mono">120+</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">Active Members</span>
+                </div>
+                <div class="p-4 rounded-2xl liquid-pill flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-extrabold text-red-400 font-mono">24+</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">Repositories</span>
+                </div>
+                <div class="p-4 rounded-2xl liquid-pill flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-extrabold text-rose-400 font-mono">350+</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">PRs Merged</span>
+                </div>
+                <div class="p-4 rounded-2xl liquid-pill flex flex-col items-center">
+                    <span class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">100%</span>
+                    <span class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-medium">Open Source</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GIT & GITHUB GUIDE SECTION -->
+        <section id="git-guide" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+            <div class="text-center mb-12">
+                <span class="text-xs font-mono uppercase tracking-widest text-red-400 px-3.5 py-1.5 rounded-full liquid-pill border border-red-500/30">Essential Knowledge</span>
+                <h2 class="text-3xl sm:text-5xl font-bold mt-4 mb-3 text-gradient-glass">Git & GitHub Starter Kit</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
+                    Master the core terminal workflow required to contribute to RAS CUI Lahore open-source repositories.
+                </p>
+            </div>
+
+            <!-- Step Selector Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <div class="lg:col-span-5 space-y-3" id="git-steps-container">
+                    <!-- Step 1 -->
+                    <div onclick="selectGitStep(0)" class="git-step-card active tilt-card p-4 rounded-2xl liquid-glass cursor-pointer border-l-4 border-l-red-500 flex items-start gap-4 transition-all" data-step="0" data-tilt>
+                        <div class="w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm sm:text-base">1. Initialize / Clone Repository</h3>
+                            <p class="text-xs text-slate-400 mt-1">Get the code locally from GitHub to your environment.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div onclick="selectGitStep(1)" class="git-step-card tilt-card p-4 rounded-2xl liquid-glass cursor-pointer border-l-4 border-l-transparent flex items-start gap-4 transition-all" data-step="1" data-tilt>
+                        <div class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">2. Create a Feature Branch</h3>
+                            <p class="text-xs text-slate-400 mt-1">Isolate your work from the main codebase safely.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div onclick="selectGitStep(2)" class="git-step-card tilt-card p-4 rounded-2xl liquid-glass cursor-pointer border-l-4 border-l-transparent flex items-start gap-4 transition-all" data-step="2" data-tilt>
+                        <div class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">3. Stage & Commit Changes</h3>
+                            <p class="text-xs text-slate-400 mt-1">Save snapshots of your progress with clear messages.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div onclick="selectGitStep(3)" class="git-step-card tilt-card p-4 rounded-2xl liquid-glass cursor-pointer border-l-4 border-l-transparent flex items-start gap-4 transition-all" data-step="3" data-tilt>
+                        <div class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm shrink-0">4</div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">4. Push to Remote & Create PR</h3>
+                            <p class="text-xs text-slate-400 mt-1">Upload your branch and request GitHub head review.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Display Terminal Box -->
+                <div class="lg:col-span-7">
+                    <div class="liquid-glass rounded-3xl p-6 sm:p-8 relative overflow-hidden">
+                        <div class="liquid-glass-lens"></div>
+                        <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                                <span class="text-xs text-slate-400 font-mono ml-2" id="terminal-title">zsh — ras-cui-lahore/repo</span>
+                            </div>
+                            <span class="text-xs font-mono text-red-400 bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/20" id="step-badge">Step 1 of 4</span>
+                        </div>
+
+                        <div id="git-display-content">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div class="mt-6 flex items-center justify-between pt-4 border-t border-white/10">
+                            <span class="text-xs text-slate-400 font-mono flex items-center gap-1.5">
+                                <i class="fa-solid fa-lightbulb text-yellow-400"></i>
+                                Pro Tip: Always sync with main before pushing!
+                            </span>
+                            <button onclick="copyCurrentCommand()" class="px-4 py-2 rounded-xl liquid-pill text-xs font-mono font-medium text-slate-200 hover:text-white hover:bg-white/20 transition-all flex items-center gap-2 active:scale-95">
+                                <i class="fa-regular fa-copy" id="copy-icon"></i>
+                                <span id="copy-text">Copy Code</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROJECT PROPOSAL SUBMISSION SECTION -->
+        <section id="submit-proposal" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
+            <div class="liquid-glass rounded-3xl p-6 sm:p-10 md:p-12 relative overflow-hidden">
+                <div class="liquid-glass-lens"></div>
+                <div class="max-w-2xl mx-auto text-center mb-10">
+                    <span class="text-xs font-mono uppercase tracking-widest text-red-400 px-3.5 py-1.5 rounded-full liquid-pill border border-red-500/30">Proposal Hub</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold mt-3 mb-2 text-white">Submit Project Proposal</h2>
+                    <p class="text-slate-300 text-xs sm:text-sm">
+                        Have an innovative open-source idea? Submit your project details directly to the GitHub Head & RAS CUI Lahore executive committee.
+                    </p>
+                </div>
+
+                <form id="proposal-form" onsubmit="handleProposalSubmit(event)" class="max-w-2xl mx-auto space-y-6">
+                    
+                    <!-- Domain Selector -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Target Technical Domain</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <button type="button" onclick="selectDomain(this, 'Robotics & Hardware')" class="domain-btn active p-2.5 rounded-xl liquid-pill text-xs font-medium text-center border border-red-500/60 bg-red-500/20 text-red-300 transition-all">
+                                🤖 Robotics
+                            </button>
+                            <button type="button" onclick="selectDomain(this, 'Embedded Systems')" class="domain-btn p-2.5 rounded-xl liquid-pill text-xs font-medium text-center text-slate-400 hover:text-white border border-transparent transition-all">
+                                ⚡ Embedded
+                            </button>
+                            <button type="button" onclick="selectDomain(this, 'Web & Mobile')" class="domain-btn p-2.5 rounded-xl liquid-pill text-xs font-medium text-center text-slate-400 hover:text-white border border-transparent transition-all">
+                                💻 Web / App
+                            </button>
+                            <button type="button" onclick="selectDomain(this, 'AI & Computer Vision')" class="domain-btn p-2.5 rounded-xl liquid-pill text-xs font-medium text-center text-slate-400 hover:text-white border border-transparent transition-all">
+                                🧠 AI / ML
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FIELD 1: Project Name -->
+                    <div>
+                        <label for="project-name" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Project Name <span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-folder-plus text-sm"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="project-name" 
+                                required 
+                                placeholder="e.g. Autonomous Maze Solving Rover ROS2" 
+                                class="w-full pl-10 pr-4 py-3.5 rounded-2xl liquid-input text-sm text-white placeholder-slate-500 focus:outline-none"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- FIELD 2: Description -->
+                    <div>
+                        <label for="project-desc" class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+                            Project Description & Objectives <span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative">
+                            <textarea 
+                                id="project-desc" 
+                                rows="4" 
+                                required 
+                                placeholder="Briefly describe what this project builds, components needed, expected deliverables, and how it benefits CUI Lahore students..." 
+                                class="w-full px-4 py-3.5 rounded-2xl liquid-input text-sm text-white placeholder-slate-500 focus:outline-none resize-none"
+                            ></textarea>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1 flex justify-between">
+                            <span>Be clear and concise.</span>
+                            <span id="char-count" class="font-mono">0 / 500</span>
+                        </p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button 
+                            type="submit" 
+                            id="submit-btn"
+                            class="w-full py-4 rounded-2xl bg-gradient-to-r from-red-600 via-crimson-600 to-rose-600 text-white font-bold text-base shadow-xl shadow-red-600/30 hover:shadow-red-600/50 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 group"
+                        >
+                            <span>Submit Proposal to GitHub Head</span>
+                            <i class="fa-solid fa-paper-plane group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- FEATURED COMMUNITY REPOSITORIES -->
+        <section id="projects" class="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-xs font-mono uppercase tracking-widest text-red-400 px-3.5 py-1.5 rounded-full liquid-pill border border-red-500/30">Open Ecosystem</span>
+                    <h2 class="text-3xl sm:text-5xl font-bold mt-3 text-gradient-glass">Featured Repositories</h2>
+                </div>
+                <p class="text-slate-400 text-xs sm:text-sm max-w-md mt-3 md:mt-0">
+                    Explore active open-source projects maintained by students under IEEE RAS CUI Lahore.
+                </p>
+            </div>
+
+            <!-- Repo Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Repo 1 -->
+                <div class="liquid-glass tilt-card rounded-3xl p-6 flex flex-col justify-between h-full group" data-tilt>
+                    <div class="liquid-glass-lens"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-red-300 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/30">C++ / ROS2</span>
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span><i class="fa-regular fa-star text-yellow-400"></i> 42</span>
+                                <span><i class="fa-solid fa-code-fork text-slate-400"></i> 18</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-red-400 transition-colors mb-2">ras-ros2-navigation</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Autonomous navigation stack for differential drive robots tailored for CUI IEEE annual robotics competition.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs">
+                        <span class="text-slate-400">Updated 2 days ago</span>
+                        <a href="https://github.com" target="_blank" rel="noopener" class="text-red-400 font-semibold hover:underline flex items-center gap-1">
+                            GitHub <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Repo 2 -->
+                <div class="liquid-glass tilt-card rounded-3xl p-6 flex flex-col justify-between h-full group" data-tilt>
+                    <div class="liquid-glass-lens"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-rose-300 px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/30">Python / PyTorch</span>
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span><i class="fa-regular fa-star text-yellow-400"></i> 67</span>
+                                <span><i class="fa-solid fa-code-fork text-slate-400"></i> 29</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-rose-400 transition-colors mb-2">quadcopter-vision-ai</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            Real-time object detection and obstacle avoidance algorithms using lightweight neural networks for drones.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs">
+                        <span class="text-slate-400">Updated 5 days ago</span>
+                        <a href="https://github.com" target="_blank" rel="noopener" class="text-rose-400 font-semibold hover:underline flex items-center gap-1">
+                            GitHub <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Repo 3 -->
+                <div class="liquid-glass tilt-card rounded-3xl p-6 flex flex-col justify-between h-full group" data-tilt>
+                    <div class="liquid-glass-lens"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-red-300 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/30">Embedded C / STM32</span>
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span><i class="fa-regular fa-star text-yellow-400"></i> 38</span>
+                                <span><i class="fa-solid fa-code-fork text-slate-400"></i> 14</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white group-hover:text-red-400 transition-colors mb-2">stm32-motor-control</h3>
+                        <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                            High-precision BLDC and Stepper motor drivers firmware designed for micro-robotics applications.
+                        </p>
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs">
+                        <span class="text-slate-400">Updated yesterday</span>
+                        <a href="https://github.com" target="_blank" rel="noopener" class="text-red-400 font-semibold hover:underline flex items-center gap-1">
+                            GitHub <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="mt-auto border-t border-white/10 bg-black/90 backdrop-blur-2xl relative z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-red-500/20 border border-red-500/40 flex items-center justify-center">
+                            <i class="fa-solid fa-microchip text-red-400 text-xs"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-sm text-white">IEEE RAS COMSATS Lahore</span>
+                            <p class="text-[11px] text-slate-400">Open Source & Robotics Society</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <a href="https://github.com" target="_blank" rel="noopener" class="w-9 h-9 rounded-full liquid-pill flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-all">
+                            <i class="fa-brands fa-github text-sm"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" rel="noopener" class="w-9 h-9 rounded-full liquid-pill flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-all">
+                            <i class="fa-brands fa-linkedin-in text-sm"></i>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" rel="noopener" class="w-9 h-9 rounded-full liquid-pill flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-all">
+                            <i class="fa-brands fa-facebook-f text-sm"></i>
+                        </a>
+                    </div>
+
+                    <div class="text-xs text-slate-500 font-mono text-center md:text-right">
+                        © 2025 RAS CUI Lahore. Red Liquid Glass Architecture.
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+        <div class="liquid-glass rounded-3xl p-8 max-w-md w-full border border-red-500/40 text-center shadow-2xl transform scale-95 transition-transform duration-300" id="modal-box">
+            <div class="w-16 h-16 rounded-full bg-red-500/20 border border-red-500/50 text-red-400 text-2xl flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">Proposal Transmitted!</h3>
+            <p class="text-xs text-slate-300 mb-6 leading-relaxed">
+                Your project proposal has been sent to the <strong class="text-red-400">GitHub Head @ RAS CUI Lahore</strong>. You will receive review updates via student portal.
+            </p>
+            <div class="p-3.5 rounded-2xl liquid-pill mb-6 text-left font-mono text-xs text-slate-300 space-y-1 border border-white/10">
+                <p><span class="text-slate-500">Project:</span> <span id="modal-project-name" class="text-red-300"></span></p>
+                <p><span class="text-slate-500">Domain:</span> <span id="modal-project-domain" class="text-rose-300"></span></p>
+            </div>
+            <button onclick="closeModal()" class="w-full py-3.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm transition-all shadow-lg shadow-red-600/40">
+                Awesome, Got It!
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const gitStepsData = [
+            {
+                title: "1. Clone or Initialize Repository",
+                terminalTitle: "zsh — ras-cui-lahore/getting-started",
+                badge: "Step 1 of 4",
+                description: "Copy the repository URL from GitHub and pull a full copy down to your local computer to start editing files.",
+                code: `# Clone the official RAS CUI repository
+git clone https://github.com/RAS-CUI-Lahore/sample-robotics-project.git
+
+# Navigate into the project folder
+cd sample-robotics-project
+
+# Check current repository status
+git status`,
+                tip: "Make sure you have Git installed on your laptop before running this command!"
+            },
+            {
+                title: "2. Create a Feature Branch",
+                terminalTitle: "zsh — ras-cui-lahore/feature-branch",
+                badge: "Step 2 of 4",
+                description: "Never push directly to 'main'. Create a new branch dedicated exclusively to your feature or bug fix.",
+                code: `# Create and switch to your new feature branch
+git checkout -b feature/sensor-calibration
+
+# Verify active branch
+git branch`,
+                tip: "Use naming conventions like 'feature/xyz' or 'fix/abc' for clean branch history."
+            },
+            {
+                title: "3. Stage and Commit Changes",
+                terminalTitle: "zsh — ras-cui-lahore/staging-commit",
+                badge: "Step 3 of 4",
+                description: "Once you edit files, add them to the staging index and commit them with a descriptive message.",
+                code: `# Add specific modified files to staging
+git add src/motor_controller.cpp
+
+# Or stage all changed files
+git add .
+
+# Create a clear, concise commit
+git commit -m "feat: implement PID loop for motor speed regulation"`,
+                tip: "Keep commits modular and concise so reviewers can easily track logic."
+            },
+            {
+                title: "4. Push Branch & Create Pull Request",
+                terminalTitle: "zsh — ras-cui-lahore/push-pr",
+                badge: "Step 4 of 4",
+                description: "Push your local feature branch up to GitHub and open a Pull Request (PR) for review by the GitHub Head.",
+                code: `# Push feature branch to remote GitHub
+git push -u origin feature/sensor-calibration
+
+# Visit GitHub.com -> Click 'Compare & Pull Request'`,
+                tip: "Link your Pull Request to the corresponding open issue for automated tracking."
+            }
+        ];
+
+        let currentStepIndex = 0;
+        let selectedDomainText = "Robotics & Hardware";
+
+        function renderGitStep(index) {
+            currentStepIndex = index;
+            const data = gitStepsData[index];
+            
+            document.getElementById('terminal-title').textContent = data.terminalTitle;
+            document.getElementById('step-badge').textContent = data.badge;
+
+            const display = document.getElementById('git-display-content');
+            display.innerHTML = `
+                <div class="mb-4">
+                    <h4 class="text-lg font-bold text-white mb-1">${data.title}</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">${data.description}</p>
+                </div>
+                <div class="code-block rounded-2xl p-4 overflow-x-auto text-xs sm:text-sm text-red-300 shadow-inner bg-black/80 border border-white/10 font-mono">
+                    <pre><code>${escapeHtml(data.code)}</code></pre>
+                </div>
+            `;
+
+            const cards = document.querySelectorAll('.git-step-card');
+            cards.forEach((card, idx) => {
+                const badge = card.querySelector('div');
+                if (idx === index) {
+                    card.classList.add('border-l-red-500', 'bg-white/10');
+                    card.classList.remove('border-l-transparent');
+                    badge.className = "w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/40 text-red-400 flex items-center justify-center font-bold text-sm shrink-0";
+                } else {
+                    card.classList.remove('border-l-red-500', 'bg-white/10');
+                    card.classList.add('border-l-transparent');
+                    badge.className = "w-8 h-8 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 flex items-center justify-center font-bold text-sm shrink-0";
+                }
+            });
+        }
+
+        function selectGitStep(index) {
+            renderGitStep(index);
+        }
+
+        function copyCurrentCommand() {
+            const data = gitStepsData[currentStepIndex];
+            navigator.clipboard.writeText(data.code).then(() => {
+                const copyText = document.getElementById('copy-text');
+                const copyIcon = document.getElementById('copy-icon');
+                
+                copyText.textContent = "Copied!";
+                copyIcon.className = "fa-solid fa-check text-emerald-400";
+
+                setTimeout(() => {
+                    copyText.textContent = "Copy Code";
+                    copyIcon.className = "fa-regular fa-copy";
+                }, 2000);
+            });
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function selectDomain(btn, domain) {
+            document.querySelectorAll('.domain-btn').forEach(b => {
+                b.classList.remove('active', 'border-red-500/60', 'bg-red-500/20', 'text-red-300');
+                b.classList.add('border-transparent', 'text-slate-400');
+            });
+            btn.classList.add('active', 'border-red-500/60', 'bg-red-500/20', 'text-red-300');
+            btn.classList.remove('border-transparent', 'text-slate-400');
+            selectedDomainText = domain;
+        }
+
+        const descInput = document.getElementById('project-desc');
+        const charCount = document.getElementById('char-count');
+
+        descInput.addEventListener('input', (e) => {
+            const count = e.target.value.length;
+            charCount.textContent = `${count} / 500`;
+            if (count > 450) {
+                charCount.classList.add('text-amber-400');
+            } else {
+                charCount.classList.remove('text-amber-400');
+            }
+        });
+
+        function handleProposalSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('project-name').value.trim();
+            const desc = document.getElementById('project-desc').value.trim();
+
+            if (!name || !desc) return;
+
+            document.getElementById('modal-project-name').textContent = name;
+            document.getElementById('modal-project-domain').textContent = selectedDomainText;
+
+            const modal = document.getElementById('success-modal');
+            const box = document.getElementById('modal-box');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-95');
+            box.classList.add('scale-100');
+
+            document.getElementById('proposal-form').reset();
+            charCount.textContent = "0 / 500";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('success-modal');
+            const box = document.getElementById('modal-box');
+            
+            box.classList.remove('scale-100');
+            box.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // 3D Tilt Effect on Liquid Glass Cards
+        function init3DTilt() {
+            const tiltElements = document.querySelectorAll('[data-tilt]');
+            tiltElements.forEach(el => {
+                el.addEventListener('mousemove', (e) => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+                    
+                    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderGitStep(0);
+            init3DTilt();
+        });
+    </script>
+</body>
+</html>
